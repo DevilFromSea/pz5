@@ -4,32 +4,32 @@ void buildtree(tree *t, table p)
 {
 	for (int i = 0; i < p.n; i++)
 	{
-		treeadd(t, p.cont[i], 0);
+		treeadd(t, p.cont[i]);
 		printf_s("Element was put in tree\n");
 	}
 }
 
-void treeadd(tree *t, elem x, int i)
+void treeadd(tree *t, elem x)
 {
 	tree *b = t;
 	if (!b)
 	{
-		b = new tree(x, i++);
+		b = new tree(x);
 		return;
 	}
 	if (_mbscmp(x.key, b->el.key) < 0)
 	{
 		if (b->left)
-			treeadd(b->left, x, i);
+			treeadd(b->left, x);
 		else
-			b->left = new tree(x, i++);
+			b->left = new tree(x);
 	}
 	if (_mbscmp(x.key, b->el.key) > 0)
 	{
 		if (b->right)
-			treeadd(b->right, x, i);
+			treeadd(b->right, x);
 		else
-			b->right = new tree(x, i++);
+			b->right = new tree(x);
 	}
 }
 
@@ -91,32 +91,34 @@ void quicksort(table *t, int m, int n)
 		quicksort(t, a, n);
 }
 
-void treesort(table *t, int m, int n, tree *tree)
+void treesort(table *t, tree *tr)
 {
-	int max = m;
-	elem temp;
-	while (tree->index != max)
+	t->n = 0;
+	stack <tree *> s;
+	tree *lastn = NULL, *topn = NULL;
+	s.push(tr);
+	tr = tr->left;
+	while (!empty(s))
 	{
-		tree->index = max;
-		tree->left->index = 2 * tree->index + 1;
-		tree->right->index = 2 * (tree->index + 1);
-		if (tree->left->index <= n)
-			if (_mbscmp(t->cont[tree->left->index].key, t->cont[tree->index].key) > 0)
-				max = tree->left->index;
-		if (tree->right->index <= n)
-			if (_mbscmp(t->cont[tree->right->index].key, t->cont[max].key) > 0)
-				max = tree->right->index;
-		temp = t->cont[tree->index];
-		t->cont[tree->index] = t->cont[max];
-		t->cont[max] = temp;
-	}
-	for (m = (t->n - 1) / 2; m >= 0; m--)
-		treesort(t, m, t->n - 1, tree);
-	for (m = t->n - 1; m >= 1; m--)
-	{
-		temp = t->cont[0] = t->cont[m];
-		t->cont[m] = temp;
-		treesort(t, 0, m - 1, tree);
+		if (tr)
+		{
+			s.push(tr);
+			tr = tr->left;
+		}
+		else
+		{
+			topn = s.top();
+			if (topn->right && lastn != topn->right)
+			{
+				tr = topn->right;
+			}
+			else
+			{
+				s.pop();
+				add(t, tr->el);
+				lastn = topn;
+			}
+		}
 	}
 }
 

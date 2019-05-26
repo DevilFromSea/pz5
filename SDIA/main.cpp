@@ -27,7 +27,7 @@ int main()
 			exitFlag = 1;
 			break;
 		case CMD_TREE_SORT:
-			treesort(&t, 0, t.n - 1, tree);
+			treesort(&t, tree);
 			exitFlag = 1;
 			break;
 		default:

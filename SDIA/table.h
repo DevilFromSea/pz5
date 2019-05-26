@@ -4,6 +4,7 @@
 #include <mbstring.h>
 #include <locale.h>
 #include <stdio.h>
+#include <stack>
 #include <windows.h>
 
 const int Nmax = 10;
@@ -20,10 +21,9 @@ struct elem
 struct tree
 {
 	elem el;
-	int index;
 	tree *left, *right;
-	tree(elem _el, int _index, tree *_left = NULL, tree *_right = NULL) :
-		el(_el), index(_index), left(_left), right(_right) {}
+	tree(elem _el, tree *_left = NULL, tree *_right = NULL) :
+		el(_el), left(_left), right(_right) {}
 };
 
 struct table
@@ -34,7 +34,7 @@ struct table
 
 void buildtree(tree *t, table p);
 
-void treeadd(tree *t, elem x, int i);
+void treeadd(tree *t, elem x);
 
 void buildtable(table *t);
 
@@ -42,6 +42,6 @@ void add(table *t, elem e);
 
 void quicksort(table *t, int m, int n);
 
-void treesort(table *t, int m, int n, tree *tree);
+void treesort(table *t, tree *tree);
 
 void showtable(table t);
