@@ -4,10 +4,9 @@ int main()
 {	
 	setlocale(LC_CTYPE, "Russian");
 	table t;
+	tree *tr = NULL;
 	int exitFlag = 0, n;
 	buildtable(&t);
-	tree *tree = NULL;
-	buildtree(tree, t);
 	printf_s("Which method would you prefer to sort the table?\n"
 			"1. Quick sort\n"
 			"2. Sort with using binary tree\n");
@@ -27,7 +26,8 @@ int main()
 			exitFlag = 1;
 			break;
 		case CMD_TREE_SORT:
-			treesort(&t, tree);
+			buildtree(&tr, t);
+			treesort(&t, tr);
 			exitFlag = 1;
 			break;
 		default:
@@ -35,6 +35,7 @@ int main()
 			break;
 		}
 	}
+	printf_s("Table was successfully sorted.\n");
 	showtable(t);
 	system ("pause");
 }

@@ -1,4 +1,5 @@
 #pragma once
+
 #include <cstdlib>
 #include <string.h>
 #include <mbstring.h>
@@ -6,6 +7,8 @@
 #include <stdio.h>
 #include <stack>
 #include <windows.h>
+
+using namespace std;
 
 const int Nmax = 10;
 
@@ -32,9 +35,9 @@ struct table
 	int n = 0;
 };
 
-void buildtree(tree *t, table p);
+void buildtree(tree **t, table p);
 
-void treeadd(tree *t, elem x);
+void treeadd(tree **t, elem x);
 
 void buildtable(table *t);
 

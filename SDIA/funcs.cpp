@@ -1,35 +1,31 @@
 #include "table.h"
 
-void buildtree(tree *t, table p)
+void buildtree(tree **t, table p)
 {
 	for (int i = 0; i < p.n; i++)
-	{
 		treeadd(t, p.cont[i]);
-		printf_s("Element was put in tree\n");
-	}
 }
 
-void treeadd(tree *t, elem x)
+void treeadd(tree **t, elem x)
 {
-	tree *b = t;
-	if (!b)
+	if (!*t)
 	{
-		b = new tree(x);
+		*t = new tree(x);
 		return;
 	}
-	if (_mbscmp(x.key, b->el.key) < 0)
+	if (_mbscmp(x.key, (*t)->el.key) < 0)
 	{
-		if (b->left)
-			treeadd(b->left, x);
+		if ((*t)->left)
+			treeadd(&(*t)->left, x);
 		else
-			b->left = new tree(x);
+			(*t)->left = new tree(x);
 	}
-	if (_mbscmp(x.key, b->el.key) > 0)
+	if (_mbscmp(x.key, (*t)->el.key) > 0)
 	{
-		if (b->right)
-			treeadd(b->right, x);
+		if ((*t)->right)
+			treeadd(&(*t)->right, x);
 		else
-			b->right = new tree(x);
+			(*t)->right = new tree(x);
 	}
 }
 
@@ -95,28 +91,32 @@ void treesort(table *t, tree *tr)
 {
 	t->n = 0;
 	stack <tree *> s;
-	tree *lastn = NULL, *topn = NULL;
-	s.push(tr);
-	tr = tr->left;
-	while (!empty(s))
+	bool toleft = true;
+	tree *lastn = tr;
+	if (tr)
 	{
-		if (tr)
+		s.push(lastn);
+		while (!empty(s))
 		{
-			s.push(tr);
-			tr = tr->left;
-		}
-		else
-		{
-			topn = s.top();
-			if (topn->right && lastn != topn->right)
+			if (toleft)
 			{
-				tr = topn->right;
+				while (lastn->left)
+				{
+					s.push(lastn);
+					lastn = lastn->left;
+				}
+			}
+			printf_s("%s\n", lastn->el.key);
+			if (lastn->right)
+			{
+				lastn = lastn->right;
+				toleft = true;
 			}
 			else
 			{
+				lastn = s.top();
 				s.pop();
-				add(t, tr->el);
-				lastn = topn;
+				toleft = false;
 			}
 		}
 	}
