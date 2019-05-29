@@ -11,7 +11,7 @@ int main()
 	buildtable(&t);
 	printf_s("Which method would you prefer to sort the table?\n"
 			"1. Quick sort\n"
-			"2. Sort with using binary tree\n");
+			"2. Sort using binary tree\n");
 	while (!exitFlag)
 	{
 		printf("Enter the command number: ");
