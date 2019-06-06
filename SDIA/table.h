@@ -1,5 +1,6 @@
 #pragma once
 
+#include <algorithm>
 #include <cstdlib>
 #include <string.h>
 #include <mbstring.h>
@@ -7,23 +8,26 @@
 #include <stdio.h>
 #include <stack>
 #include <windows.h>
+#include <stdlib.h>
 
 using namespace std;
 
-const int Nmax = 10;
+const int Nmax = 20; // Максимальное число элементов в таблице
+const int Keymax = 9; // Максимальное число элементов в ключе
+const int Namemax = 21; // Максимальное число элементов в названии товара
 
 enum Commands1 { CMD_QUICK_SORT = 1, CMD_TREE_SORT };
 enum Commands2 { CMD_STANDART_SEARCH = 1, CMD_BINARY_SEARCH };
 
-struct elem
+struct elem // Объявление содержимого таблицы 
 {
-	UCHAR key[9];
-	char name[21];
+	UCHAR key[Keymax];
+	char name[Namemax];
 	int amount;
 	int price;
 };
 
-struct tree
+struct tree // Объявление дерева (для сортировки при помощи дерева)
 {
 	elem el;
 	tree *left, *right;
@@ -31,30 +35,21 @@ struct tree
 		el(_el), left(_left), right(_right) {}
 };
 
-struct table
+struct table // Объявление таблицы
 {
-	elem cont[Nmax];
+	elem *cont[Nmax];
 	int n = 0;
 };
 
-void search(elem x, table *t, int a);
-
-void finaltable(table *t, table pt, int a);
-
-void buildtree(tree **t, table p);
-
-void treeadd(tree **t, elem x);
-
-void buildtable(table *t);
-
-void buildptable(table *t);
-
-void add(table *t, elem e);
-
-void addp(table *pt, elem e);
-
-void quicksort(table *t, int m, int n);
-
-void treesort(table *t, tree *tree);
-
-void showtable(table t);
+int compare(const void *a, const void *b);
+void buildptable(table *t); // Создаём таблицу 2 (с ценами)
+void buildtable(table *t); // Создаём таблицу 1 (основную)
+void add(table *t, elem *e); // Запись элемента в таблицу 1
+void padd(table *t, elem *e); // Запись элемента в таблицу 2
+void buildtree(tree **t, table p); // Создаём дерево
+void treeadd(tree **t, elem x); // Добавить элемент в дерево
+void treesort(table *t, tree *tree); // Сортировка при помощи дерева
+void finaltable(table *t, table pt, bool a); // Построение финальной версии таблицы
+void combine(elem x, table *t, bool a);	// Запись в первую таблицу столбца с ценами (цены из втрой таблицы 2 будем сравнивать по ключу)
+void showtable(table t); // Показ содержимого таблицы
+#pragma once
