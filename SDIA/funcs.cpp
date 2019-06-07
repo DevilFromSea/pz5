@@ -2,9 +2,7 @@
 
 int compare(const void *a, const void *b)
 {
-	elem* arg1 = *(elem**)a;
-	elem* arg2 = *(elem**)b;
-	return _mbsicmp(arg1->key, arg2->key);
+	return _mbsicmp(*(UCHAR**)a, *(UCHAR**)b);
 }
 
 void buildptable(table *t)
@@ -21,7 +19,7 @@ void buildptable(table *t)
 	}
 	fclose(f);
 	printf_s("Price table was successfully built.\n");
-	for (int i = 0; i < t->n; i++) // Вывод таблицы на экран
+	for (int i = 0; i < t->n; i++) // Г‚Г»ГўГ®Г¤ ГІГ ГЎГ«ГЁГ¶Г» Г­Г  ГЅГЄГ°Г Г­
 		printf_s("%s	%d\n", t->cont[i]->key, t->cont[i]->price);
 }
 
@@ -70,7 +68,7 @@ void padd(table *t, elem *e)
 
 void buildtree(tree **t, table p)
 {
-   for (int i = 0; i < p.n; i++) // Создаём двоичное дерево поиска
+   for (int i = 0; i < p.n; i++) // Г‘Г®Г§Г¤Г ВёГ¬ Г¤ГўГ®ГЁГ·Г­Г®ГҐ Г¤ГҐГ°ГҐГўГ® ГЇГ®ГЁГ±ГЄГ 
 	  treeadd(t, *p.cont[i]);
 }
 
@@ -130,15 +128,15 @@ void treesort(table *t, tree *tr)
 
 void finaltable(table *t, table pt, bool a)
 {
-   for (int i = 0; i < pt.n; i++) // Соединяем таблицы
+   for (int i = 0; i < pt.n; i++) // Г‘Г®ГҐГ¤ГЁГ­ГїГҐГ¬ ГІГ ГЎГ«ГЁГ¶Г»
 	  combine(*pt.cont[i], t, a);
 }
 
 void combine(elem x, table *t, bool a)
 {
-   if (a) // true или false
+   if (a) // true ГЁГ«ГЁ false
    {
-	  for (int i = 0; i < t->n; i++) // В первую таблицу записываем столбец с ценами
+	  for (int i = 0; i < t->n; i++) // Г‚ ГЇГҐГ°ГўГіГѕ ГІГ ГЎГ«ГЁГ¶Гі Г§Г ГЇГЁГ±Г»ГўГ ГҐГ¬ Г±ГІГ®Г«ГЎГҐГ¶ Г± Г¶ГҐГ­Г Г¬ГЁ
 		 if (!_mbscmp(x.key, t->cont[i]->key))
 		 {
 			t->cont[i]->price = x.price;
